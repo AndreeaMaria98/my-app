@@ -20,7 +20,7 @@ const localStorageKey = 'chatKey';
 function App() {
   const [message, setMessage] = useState("");
   const [chats, setChats] = useState([{
-    role: "user_msg", content: `Hi I'm your bot etc tec`, date: new Date()
+    role: "ACE Bot", content: `Hi I'm your bot etc tec`, date: new Date()
   }]);
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef(null);
@@ -38,7 +38,7 @@ function App() {
     if (!message) return;
 
     let msgs = chats;
-    msgs.push({ role: "user", content: message, date: new Date() });
+    msgs.push({ role: "User", content: message, date: new Date() });
     msgs.push({ role: "loading", content: '', date: null })
     setChats(msgs);
 
@@ -58,7 +58,7 @@ function App() {
       .then((data) => {
         console.info(data);
         setChats((prevChats) => {
-          prevChats[prevChats.length - 1] = { role: "user_msg", content: data.response, date: new Date() };
+          prevChats[prevChats.length - 1] = { role: "ACE Bot", content: data.response, date: new Date() };
           localStorage.setItem(localStorageKey, JSON.stringify(prevChats));
           return prevChats;
         });
@@ -143,7 +143,7 @@ function App() {
                     return <ReactLoading height={50} width={50} type={'bubbles'} />
                   }
                   return (
-                    chat?.role === "user" ? renderUserMessage(chat) : renderBotMessage(chat)
+                    chat?.role === "User" ? renderUserMessage(chat) : renderBotMessage(chat)
                   )
                 })
                 : ""}
