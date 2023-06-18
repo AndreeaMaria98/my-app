@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import ReactLoading from 'react-loading';
+import userImage from './usericon.png'
+import botImage from './botIcon.png'
 
 import {
   MDBContainer,
@@ -89,7 +91,7 @@ function App() {
         </MDBCardBody>
       </MDBCard>
       <img
-        src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
+        src={userImage}
         alt="avatar"
         className="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
         width="60"
@@ -97,10 +99,19 @@ function App() {
     </li>
   );
 
+  const renderLinkIfExist = (content) => {
+    if (!content) return;
+    const linkExists = content.indexOf('http');
+    if (!linkExists) return <p className="mb-0">{content}</p>;
+    const link = content.substring(linkExists);
+    const beforeLink = content.substring(0, linkExists);
+    return <p className="mb-0">{beforeLink}<a className="mb-0" href={link}>{link}</a></p>
+  }
+
   const renderBotMessage = (chat) => (
     <li className="d-flex justify-content-between mb-4">
       <img
-        src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+        src={botImage}
         alt="avatar"
         className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
         width="60"
@@ -116,9 +127,7 @@ function App() {
           </p>
         </MDBCardHeader>
         <MDBCardBody>
-          <p className="mb-0">
-            {chat?.content}
-          </p>
+          {renderLinkIfExist(chat?.content)}
         </MDBCardBody>
       </MDBCard>
     </li>
