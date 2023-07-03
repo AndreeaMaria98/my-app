@@ -22,7 +22,7 @@ const localStorageKey = 'chatKey';
 function App() {
   const [message, setMessage] = useState("");
   const [chats, setChats] = useState([{
-    role: "ACE Bot", content: `Hi I'm your bot etc tec`, date: new Date()
+    role: "ACE Bot", content: `Buna! Eu sunt ACE bot. Cu ce te pot ajuta?`, date: new Date()
   }]);
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef(null);
@@ -33,6 +33,12 @@ function App() {
       setChats(JSON.parse(key));
     }
   }, []);
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [chats]);  
+  
 
   const chat = async (e, message) => {
     e.preventDefault();
@@ -81,7 +87,7 @@ function App() {
         >
           <p class="fw-bold mb-0">{chat.role}</p>
           <p class="text-light small mb-0">
-            <MDBIcon far icon="clock" /> {new Date(chat.date).toLocaleString()}
+            <MDBIcon far icon="clock" /> {new Date(chat.date).toLocaleString("ro-RO")}
           </p>
         </MDBCardHeader>
         <MDBCardBody>
@@ -102,7 +108,7 @@ function App() {
   const renderLinkIfExist = (content) => {
     if (!content) return;
     const linkExists = content.indexOf('http');
-    if (!linkExists) return <p className="mb-0">{content}</p>;
+    if (!linkExists || linkExists < 0) return <p className="mb-0">{content}</p>;
     const link = content.substring(linkExists);
     const beforeLink = content.substring(0, linkExists);
     return <p className="mb-0">{beforeLink}<a className="mb-0" href={link}>{link}</a></p>
@@ -123,7 +129,7 @@ function App() {
         >
           <p className="fw-bold mb-0">{chat.role}</p>
           <p className="text-light small mb-0">
-            <MDBIcon far icon="clock" /> {new Date(chat.date).toLocaleString()}
+            <MDBIcon far icon="clock" /> {new Date(chat.date).toLocaleString("ro-RO")}
           </p>
         </MDBCardHeader>
         <MDBCardBody>
@@ -145,7 +151,7 @@ function App() {
       <MDBRow>
         <MDBCol md="12" lg="12" xl="12">
           <MDBTypography listUnStyled className="text-white">
-            <div style={{ overflow: 'auto', height: 600 }} ref={(ref) => { scrollRef.current = ref; }}>
+            <div style={{ overflow: 'auto', height: 600 }} ref={scrollRef}>
               {chats && chats.length
                 ? chats.map((chat, index) => {
                   if (chat.role === "loading") {
@@ -169,10 +175,9 @@ function App() {
                   class="form-control active"
                   id="textAreaExample3"
                   rows="4"
-                  style={{ height: 80 }}
+                  style={{ height: chats.length > 5 ? 142 : 174 }}
                   onChange={(e) => setMessage(e.target.value)}
                   value={message}
-                  disabled={isTyping}
                   onKeyDown={(e) => onEnterPress(e, message)}
                 />
                 <label class="form-label" for="textAreaExample3" style={{ marginLeft: 0 }}>Message</label>
